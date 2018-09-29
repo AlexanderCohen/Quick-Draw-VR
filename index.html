@@ -4,15 +4,60 @@
     <meta charset="utf-8">
     <title>Hello, World! - A-Frame</title>
     <meta name="description" content="Hello, World! - A-Frame">
-    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <script>
+      AFRAME.registerComponent('change-color-on-hover', {
+        schema: {
+          color: {default: 'red'}
+        },
+
+        init: function () {
+          var data = this.data;
+          var el = this.el;  // <a-box>
+          var defaultColor = el.getAttribute('material').color;
+
+          el.addEventListener('mouseenter', function () {
+            el.setAttribute('color', data.color);
+          });
+
+          el.addEventListener('mouseleave', function () {
+            el.setAttribute('color', defaultColor);
+          });
+        }
+      });
+    </script>
   </head>
   <body>
     <a-scene>
-      <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-      <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+
+<!-- basic Grid makeup -->
+
+
+
+
+        <a-cylinder id="top"    position="0 3 -5"     height="9" rotation="90 90 0" radius=".25" ></a-cylinder>
+        <a-cylinder id="bottom" position="0 -3 -5"    height="9" rotation="90 90 0" radius=".25" ></a-cylinder>
+        <a-cylinder id="right"  position="4.5 0 -5"   height="6.5" rotation="0 90 0" radius=".25" ></a-cylinder>
+        <a-cylinder id="left"   position="-4.5 0 -5"  height="6.5" rotation="0 90 0" radius=".25" ></a-cylinder>
+
+        <a-cylinder id="top H"  position="0 1.5 -5"   height="9" rotation="90 90 0" radius=".081" ></a-cylinder>
+        <a-cylinder id="top M"  position="0 -1.5 -5"  height="9" rotation="90 90 0" radius=".081" ></a-cylinder>
+        <a-cylinder id="top B"  position="0 1.5 -5"   height="9" rotation="90 90 0" radius=".081" ></a-cylinder>
+        <a-cylinder id="top B"  position="1.5 0 -5"   height="6" rotation="0 90 0" radius=".081" ></a-cylinder>
+        <a-cylinder id="top B"  position="-1.5 0 -5"  height="6" rotation="0 90 0" radius=".081" ></a-cylinder>
+        <a-cylinder id="top B"  position="-3 0 -5"    height="6" rotation="0 90 0" radius=".081" ></a-cylinder>
+        <a-cylinder id="top B"  position="3 0 -5"     height="6" rotation="0 90 0" radius=".081" ></a-cylinder>
+        <a-cylinder id="top B"  position="0 0 -5"     height="6" rotation="0 90 0" radius=".081" ></a-cylinder>
+        <a-cylinder id="top B"  position="0 0 -5"     height="9" rotation="90 90 0" radius=".081"></a-cylinder>
+
+
+        <a-box id="card" po
+
+        <a-plane position="0 -5 -5" rotation="-90 0 0" width="15" height="4" color="#7BC8A4"></a-plane>
+
+
       <a-sky color="#ECECEC"></a-sky>
+      <a-cameras position="0 0 -5"><a-cursor></a-cursor></a-camera>
     </a-scene>
   </body>
 </html>
