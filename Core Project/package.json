@@ -19,6 +19,7 @@
     "aframe-scene",
     "webvr",
     "vr"
+    
   ],
   "dependencies": {
     "aframe-physics-system": "^3.2.0"
