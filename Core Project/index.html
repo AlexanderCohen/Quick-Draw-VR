@@ -9,12 +9,55 @@
     <script src="/assets/aframe-super-shooter-kit.js"></script>
   </head>
   <script>
+    var flipped = [0,0];
+
+    function addTargetToFlipped(target){
+
+      if(flipped[0] == 0){
+        flipped[0] = target.id;
+        target.setAttribute("material","src","#image_" + target.getAttribute('value'))
+      } else if (flipped[1] == 0 && !flipped.includes(target.id) ) {
+        flipped[1] = target.id;
+        target.setAttribute("material","src","#image_" + target.getAttribute('value'))
+        checkMatch(flipped)
+      } else {
+        console.log(flipped);
+        console.log("duplicate detected");
+      }
+    };
+
+    function checkMatch(flipped){
+      card1 =  document.getElementById(flipped[0])
+      card2 =  document.getElementById(flipped[0])
+
+      if (card1.getAttribute('value') == card2.getAttribute('value')){
+        console.log("they match");
+        flipped[0] = 0;
+        flipped[1] = 0;
+      } else {
+        card1.setAttribute("material","src","#image_7")
+        card2.setAttribute("material","src","#image_7")
+        console.log("they do not match");
+        flipped[0] = 0;
+        flipped[1] = 0;
+
+      }
+
+      console.log(card1.getAttribute('value'), card2.getAttribute('value'));
+
+
+    };
   /**
      * Click mouse to shoot.
      */
     AFRAME.registerComponent('click-to-shoot', {
       init: function () {
         document.body.addEventListener('mousedown', () => { this.el.emit('shoot'); });
+      }
+    });
+    AFRAME.registerComponent('squeeze-to-shoot', {
+      init: function () {
+        document.body.addEventListener('triggerdown', () => { this.el.emit('shoot'); });
       }
     });
 
@@ -28,15 +71,10 @@
         var el = this.el;
 
         el.addEventListener('hit', () => {
-          if (!el.flipped){
-            this.el.emit(el.id + '_flip-start');
-            console.log("Card: " + el.id + " Flipped over" );
-            console.log(el);
-            console.log(el.material);
-          } else {
-            this.el.emit(el.id + '_flip-stop')
-          }
 
+            this.el.emit(el.id + '_flip-start');
+            el.getAttribute('material')
+            addTargetToFlipped(el);
 
         });
       }
@@ -48,94 +86,115 @@
 
         <a-assets>
 
-            <img src="/assets/images/ace-of-diamonds.png" id="ace">
-            <img src="/assets/images/cowboy-hat.png" id="hat">
-            <img src="/assets/images/buffalo.png" id="bull">
-            <img src="/assets/images/beer.png" id="beer">
-            <img src="/assets/images/boot.png" id="boot">
-            <img src="/assets/images/cactus.png" id="cactus">
-            <img src="/assets/images/dynamite.png" id="dynamite">
-            <img src="/assets/images/horse.png" id="horse">
-            <img src="/assets/images/ingot.png" id="ingot">
-            <img src="/assets/images/map.png" id="map">
-            <img src="/assets/images/star.png" id="star">
-            <img src="/assets/images/whip.png" id="whip">
+            <img src="/assets/images/ace-of-diamonds.png" id="image_1">
+            <img src="/assets/images/cowboy-hat.png" id="image_2">
+            <img src="/assets/images/buffalo.png" id="image_3">
+            <img src="/assets/images/beer.png" id="image_4">
+            <img src="/assets/images/boot.png" id="image_5">
+            <img src="/assets/images/cactus.png" id="image_6">
+            <img src="/assets/images/dynamite.png" id="image_7">
+            <img src="/assets/images/horse.png" id="image_8">
+            <img src="/assets/images/ingot.png" id="image_9">
+            <img src="/assets/images/map.png" id="image_10">
+            <img src="/assets/images/star.png" id="image_11">
+            <img src="/assets/images/whip.png" id="image_12">
             <img src="/assets/images/wild-west.png" id="west">
             <img src="/assets/images/money-bag.png" id="money">
+            <img src="/assets/images/old_logs.jpg" id="logs">
+            <img src="/assets/images/Desert.jpg" id="sky">
+            <img src="/assets/images/skybox.jpg" id="skybox">
+            <img src="/assets/images/floor_texture.jpg" id="floor">
+
+
 
         </a-assets>
-
+        <a-entity gltf-model="/assets/western_theme/scene.gltf" position="24 -3 -20" rotation="0 45 0" scale="0.021 0.021 0.021" ></a-entity>
         <a-entity id="bulletTemplate" dynamic-body bullet geometry="primitive: sphere; radius: 0.1" material="color: orange"></a-entity>
-
 <!-- basic Grid makeup -->
-        <a-cylinder id="left"   static-body position="-4.5 0 -5"  height="6.5" rotation="0 90 0" radius=".175"></a-cylinder>
-        <a-cylinder id="top"    static-body position="0 3 -5"     height="9" rotation="90 90 0"  radius=".175" ></a-cylinder>
-        <a-cylinder id="right"  static-body position="4.5 0 -5"   height="6.5" rotation="0 90 0" radius=".175" ></a-cylinder>
-        <a-cylinder id="bottom" static-body position="0 -3 -5"    height="9" rotation="90 90 0"  radius=".175" ></a-cylinder>
+        <a-cylinder id="left"   src="#logs" repeat="" static-body position="-4.5 0 -5"  height="6.5"  rotation="0 90 0" radius=".175"  ></a-cylinder>
+        <a-cylinder id="top B"  src="#logs" repeat="" static-body position="-1.5 0 -5"  height="6"    rotation="0 90 0"  radius=".175" ></a-cylinder>
+        <a-cylinder id="top B"  src="#logs" repeat="" static-body position="-3 0 -5"    height="6"    rotation="0 90 0"  radius=".175" ></a-cylinder>
+        <a-cylinder id="top B"  src="#logs" repeat="" static-body position="3 0 -5"     height="6"    rotation="0 90 0"  radius=".175" ></a-cylinder>
+        <a-cylinder id="top B"  src="#logs" repeat="" static-body position="0 0 -5"     height="6"    rotation="0 90 0"  radius=".175" ></a-cylinder>
+        <a-cylinder id="top B"  src="#logs" repeat="" static-body position="1.5 0 -5"   height="6"    rotation="0 90 0"  radius=".175" ></a-cylinder>
+        <a-cylinder id="right"  src="#logs" repeat="" static-body position="4.5 0 -5"   height="6.5"  rotation="0 90 0" radius=".175"  ></a-cylinder>
 
-        <a-cylinder id="top H"  static-body position="0 1.5 -5"   height="9" rotation="90 90 0" radius=".175" ></a-cylinder>
-        <a-cylinder id="top M"  static-body position="0 -1.5 -5"  height="9" rotation="90 90 0" radius=".175" ></a-cylinder>
-        <a-cylinder id="top B"  static-body position="0 1.5 -5"   height="9" rotation="90 90 0" radius=".175" ></a-cylinder>
-        <a-cylinder id="top B"  static-body position="1.5 0 -5"   height="6" rotation="0 90 0"  radius=".175" ></a-cylinder>
-        <a-cylinder id="top B"  static-body position="-1.5 0 -5"  height="6" rotation="0 90 0"  radius=".175" ></a-cylinder>
-        <a-cylinder id="top B"  static-body position="-3 0 -5"    height="6" rotation="0 90 0"  radius=".175" ></a-cylinder>
-        <a-cylinder id="top B"  static-body position="3 0 -5"     height="6" rotation="0 90 0"  radius=".175" ></a-cylinder>
-        <a-cylinder id="top B"  static-body position="0 0 -5"     height="6" rotation="0 90 0"  radius=".175" ></a-cylinder>
-        <a-cylinder id="top B"  static-body position="0 0 -5"     height="9" rotation="90 90 0" radius=".175"></a-cylinder>
+        <a-cylinder id="top B"  src="#logs" repeat="" static-body position="0 0 -5"     height="9"    rotation="90 90 0" radius=".175" ></a-cylinder>
+        <a-cylinder id="top"    src="#logs" repeat="" static-body position="0 3 -5"     height="9"    rotation="90 90 0"  radius=".175" ></a-cylinder>
+        <a-cylinder id="bottom" src="#logs" repeat="" static-body position="0 -3 -5"    height="9"    rotation="90 90 0"  radius=".175" ></a-cylinder>
+        <a-cylinder id="top H"  src="#logs" repeat="" static-body position="0 1.5 -5"   height="9"    rotation="90 90 0" radius=".175" ></a-cylinder>
+        <a-cylinder id="top M"  src="#logs" repeat="" static-body position="0 -1.5 -5"  height="9"    rotation="90 90 0" radius=".175" ></a-cylinder>
+        <a-cylinder id="top B"  src="#logs" repeat="" static-body position="0 1.5 -5"   height="9"    rotation="90 90 0" radius=".175" ></a-cylinder>
 
 <!-- cards top row -->
 
-        <a-entity id="card_1"   class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="true" position="-3.75 2.25 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-out" direction="alternate" repeat="1" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_2"   class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-2.25 2.25 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_2_flip-start" end="card_2_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_3"   class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-.75 2.25 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_3_flip-start" end="card_3_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_4"   class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position=".75 2.25 -5.5"    hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_4_flip-start" end="card_4_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_5"   class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="2.25 2.25 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_5_flip-start" end="card_5_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_6"   class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="3.75 2.25 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_6_flip-start" end="card_6_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_1"   value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="true"  position="-3.75 2.25 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_1_flip-start"  end="card_1_flip-stop"  fill="backwards" easing="ease-in" direction="alternate" repeat="1" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_2"   value="3" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-2.25 2.25 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_2_flip-start"  end="card_2_flip-stop"  fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_3"   value="5" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-.75 2.25 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_3_flip-start"  end="card_3_flip-stop"  fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_4"   value="9" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position=".75 2.25 -5.5"    hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_4_flip-start"  end="card_4_flip-stop"  fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_5"   value="11" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="2.25 2.25 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_5_flip-start"  end="card_5_flip-stop"  fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_6"   value="12" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="3.75 2.25 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_6_flip-start"  end="card_6_flip-stop"  fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
 <!-- cards Second row -->
-        <a-entity id="card_7"   class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-3.75 .75 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_7_flip-start" end="card_7_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_8"   class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-2.25 .75 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_8_flip-start" end="card_8_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_9"   class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-.75 .75 -5.5"    hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_9_flip-start" end="card_9_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_10"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position=".75 .75 -5.5"     hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_11"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="2.25 .75 -5.5"    hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_12"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="3.75 .75 -5.5"    hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_7"   value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-3.75 .75 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_7_flip-start"  end="card_7_flip-stop"  fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_8"   value="4" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-2.25 .75 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_8_flip-start"  end="card_8_flip-stop"  fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_9"   value="3" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-.75 .75 -5.5"    hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_9_flip-start"  end="card_9_flip-stop"  fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_10"  value="9" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position=".75 .75 -5.5"     hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_10_flip-start" end="card_10_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_11"  value="6" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="2.25 .75 -5.5"    hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_11_flip-start" end="card_11_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_12"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="3.75 .75 -5.5"    hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_12_flip-start" end="card_12_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
 <!-- cards Third  row -->
-        <a-entity id="card_13"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-3.75 -.75 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_14"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-2.25 -.75 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_15"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-.75 -.75 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_16"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position=".75 -.75 -5.5"    hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_17"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="2.25 -.75 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_18"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="3.75 -.75 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_13"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-3.75 -.75 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_13_flip-start" end="card_13_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_14"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-2.25 -.75 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_14_flip-start" end="card_14_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_15"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-.75 -.75 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_15_flip-start" end="card_15_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_16"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position=".75 -.75 -5.5"    hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_16_flip-start" end="card_16_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_17"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="2.25 -.75 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_17_flip-start" end="card_17_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_18"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="3.75 -.75 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_18_flip-start" end="card_18_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
 <!-- cards Fourth  row -->
-        <a-entity id="card_19"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-3.75 -2.25 -5.5" hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_1_flip-start" end="card_1_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_20"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-2.25 -2.25 -5.5" hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_2_flip-start" end="card_2_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_21"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="-.75 -2.25 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_2_flip-start" end="card_2_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_22"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position=".75 -2.25 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_2_flip-start" end="card_2_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_23"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="2.25 -2.25 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_2_flip-start" end="card_2_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
-        <a-entity id="card_24"  class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #dynamite" static-body flipped="false" position="3.75 -2.25 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="720 0 0" dur="650" begin="card_2_flip-start" end="card_2_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_19"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-3.75 -2.25 -5.5" hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_19_flip-start" end="card_19_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_20"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-2.25 -2.25 -5.5" hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_20_flip-start" end="card_20_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_21"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="-.75 -2.25 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_21_flip-start" end="card_21_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_22"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position=".75 -2.25 -5.5"   hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_22_flip-start" end="card_22_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_23"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="2.25 -2.25 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_23_flip-start" end="card_23_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
+        <a-entity id="card_24"  value="1" class="target" target="healthPoints: 100" geometry="primitive: box" material="src: #image_7" static-body flipped="false" position="3.75 -2.25 -5.5"  hit-handler><a-animation attribute="rotation" from="0 0 0" to="900 0 0" dur="800" begin="card_24_flip-start" end="card_24_flip-stop" fill="backwards" easing="ease-in" direction="alternate" repeat="0" onchange="DisplayImage()"></a-animation></a-entity>
 
-        <a-plane id="ground" static-body position="0 -5 -5" rotation="-90 0 0" width="25" height="40" depth="20" color="#7BC8A4"></a-plane>
 
+        <a-cylinder id="ground-sphere" static-body="sphereRadius:NaN" position="-6.475635693952335 -4.545718264449715 -22.522122525004164" width="25" height="40" depth="20" scale="48.332434699756135 0.0785314529432166 49.58302643856034" src="#floor" repeat="10 10"></a-cylinder>
       <a-sky color="#ECECEC"></a-sky>
       <a-camera id="camera" position="-1 0 0" shooter click-to-shoot><a-cursor></a-cursor></a-camera>
-
-
+      <a-entity id="leftHand" hand-controls="left"></a-entity>
+      <a-entity id="rightHand" hand-controls="right" squeeze-to-shoot shooter></a-entity>
+      <a-sky src="#skybox"></a-sky>
     </a-scene>
   </body>
   <script>
-  // var flipped = false;
-    // document.addEventListener('click', function () {
-    // 	flipped = !flipped;
-    //   var el = document.querySelector('#card');
-    // 	el.emit(flipped ? 'flip-start' : 'flip-stop');
-    //   DisplayImage(el, flipped);
-    // });
 
-    function DisplayImage(el, flipped){
-      if (flipped) {
+    function DisplayImage(el){
+      if (el) {
         el.setAttribute('material', 'src', '#ace')
       } else {
         el.setAttribute('material', 'src', '#dynamite')
       }
-    }
+    };
+
+    var flipped = []
+
+    function checkMatch(flipped){
+      val1 =  document.getElementById(flipped[0]).getAttribute('value')
+      val1 =  document.getElementById(flipped[0]).getAttribute('value')
+      if (flipped[0] = flipped[1]){
+        document.getElementById(flipped[0]).getAttribute('value')
+      }
+    };
+
+    function AddTargetToFlipped(target){
+      if flipped.count = 2 {
+        checkmatch(flipped[0], flipped[1])
+      }
+    };
+
+    function consoleLog(message){
+      console.log(message)
+    };
+
+
   </script>
 </html>
